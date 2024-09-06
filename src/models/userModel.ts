@@ -1,11 +1,5 @@
 import mongoose, { Document, Schema } from "mongoose";
-
-export interface IUser extends Document {
-  name: string;
-  email: string;
-  isAdmin: boolean;
-  password: string;
-}
+import { IUser } from "./interfaces/userInterface";
 
 const userSchema: Schema<IUser> = new Schema<IUser>(
   {
@@ -17,9 +11,14 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ['ADMIN', 'USER'],
+      default: 'USER'
+    },
+    number: {
+        type: String,
+        
     },
     password: {
       type: String,
@@ -30,3 +29,5 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
     timestamps: true,
   }
 );
+
+export default mongoose.model<IUser>('User', userSchema)
