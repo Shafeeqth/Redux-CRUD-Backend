@@ -7,7 +7,7 @@ export default async function name(): Promise<void> {
         
         
     } catch (error: unknown) {
-        console.log('Database connection failed');
+        console.error('Database connection failed');
         process.exit(1);
         
         

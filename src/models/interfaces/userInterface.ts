@@ -6,5 +6,7 @@ export interface IUser extends Document {
     createdAt?: Date,
     updatedAt?: Date,
     number: String,
+    isModified?: (path: string) => boolean,
+    isPasswordMatch: (password: string) => boolean,
   }
   
