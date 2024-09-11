@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
 import { IRegisterBody } from "../@types/bodyTypes";
-import {validateRegisterData} from "@helpers/registerValidators";
+import {validateRegisterData} from "../helpers/registerValidators";
 /**
  *
  * @param req
@@ -41,6 +41,8 @@ export async function verifyUser(req: Request, res: Response) {
 }
 export function userRegister(req: Request, res: Response) {
   const { name, email, password, confirmPassword, phone, role } = req.body as IRegisterBody;
+  console.log(req.body);
+
   const error = validateRegisterData(req.body);
   console.log(error);
   
@@ -52,6 +54,8 @@ export function userRegister(req: Request, res: Response) {
       message: "Invalid data",
     });
   }
+
+  User.create()
 
 }
 export function editDetails(req: Request, res: Response) {
