@@ -1,26 +1,16 @@
 import { Request, Response } from "express";
 import User from "../models/userModel";
-
+import { IRegisterBody } from "../@types/bodyTypes";
+import {validateRegisterData} from "@helpers/registerValidators";
 /**
  *
  * @param req
  * @param res
  * @returns
  */
-export async function userVerify(req: Request, res: Response) {
+export async function verifyUser(req: Request, res: Response) {
+  console.log(req.body);
   const { email, password } = req.body as { email: string; password: string };
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  if (
-    email.trim().length < 3 ||
-    !emailRegex.test(email) ||
-    password.trim().length < 5
-  ) {
-    return res.status(400).json({
-      success: false,
-      error: true,
-      message: "Invalid Email or Password",
-    });
-  }
   let user = await User.findOne({ email });
   if (!user) {
     return res.status(400).json({
@@ -50,13 +40,19 @@ export async function userVerify(req: Request, res: Response) {
 
 }
 export function userRegister(req: Request, res: Response) {
-  const { userName, password, confirmPassword, phone, role } = req.body as {
-    userName: string;
-    password: string;
-    phone: string;
-    role: "ADMIN" | "USER";
-    confirmPassword: string;
-  };
+  const { name, email, password, confirmPassword, phone, role } = req.body as IRegisterBody;
+  const error = validateRegisterData(req.body);
+  console.log(error);
+  
+  if(error) {
+    return res.status(400).json({
+      success: false,
+      error: true,
+      data: error,
+      message: "Invalid data",
+    });
+  }
+
 }
 export function editDetails(req: Request, res: Response) {
   const { userName, password } = req.body as {

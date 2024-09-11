@@ -5,8 +5,9 @@ export interface IUser extends Document {
     password: string;
     createdAt?: Date,
     updatedAt?: Date,
-    number: String,
+    number: string;
+    image: string;
     isModified?: (path: string) => boolean,
-    isPasswordMatch: (password: string) => boolean,
+    isPasswordMatch: (password: string) => Promise<boolean>,
   }
   

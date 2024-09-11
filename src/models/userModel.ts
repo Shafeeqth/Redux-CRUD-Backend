@@ -31,6 +31,10 @@ const userSchema: Schema<IUser> = new Schema<IUser>(
       type: String,
       required: true,
     },
+    image:{
+      type: String,
+      required: false
+    }
   },
   {
     timestamps: true,
@@ -41,7 +45,9 @@ userSchema.pre<IUser>("save", async function (next) {
   let user = this as IUser;
   if (user.isModified && user.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
+    
   }
+  next();
 });
 
 userSchema.methods.isPasswordMatch = async function (password: string) {
